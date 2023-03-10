@@ -3,6 +3,6 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base:'/numbers8-text/',
+  base:'/numbers9-text/',
   plugins: [react()]
 })
