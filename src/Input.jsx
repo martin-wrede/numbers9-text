@@ -60,7 +60,7 @@ export default function Input({childToParentAge}) {
     const handleSubmit = (event) => {
     event.preventDefault();
      
-     const testUrl = `https://martin-wrede.github.io/numbers8-text/index.html?age=${age}&name=${name}&title=${title}&text=${text}`;
+     const testUrl = `https://martin-wrede.github.io/numbers9-text/index.html?age=${age}&name=${name}&title=${title}&text=${text}`;
   //  const testUrl = `http://localhost:3000/numbers8-text/index.html?age=${age}&name=${name}&title=${title}&text=${text}`;
     window.location.href= testUrl;
     console.log(testUrl)
