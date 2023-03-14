@@ -34,7 +34,7 @@ function Main() {
         {inputVar && <Input2 age={age} title={title} name={name} text={text} />}
         {!inputVar && <Input childToParentAge={childToParentAge} />}
 
-        <App age={ inputVar ? age : liveAge } scale={scale} modelPath={'gift5.glb'} />
+        <App age={ inputVar ? age : liveAge } scale={scale} modelPath={'gift5-mesh.glb'} />
       </>
     </React.StrictMode>
   );

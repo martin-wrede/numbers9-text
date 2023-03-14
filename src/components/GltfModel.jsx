@@ -3,30 +3,48 @@ import { useGLTF } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
-function Mesh({ mesh, scale, onPointerOver, onPointerOut }) {
+function Mesh({ modelPath, gltf, scale, onPointerOver, onPointerOut }) {
   const meshRef = useRef();
   const [hovered, setHovered] = useState(false);
+
+  const { nodes, materials } = useGLTF(modelPath)
 
   useFrame(() => {
     meshRef.current.rotation.y += 0.003;
   });
 
+
+/*
+  const nodesArray = Object.values(nodes);
+
   return (
-    <mesh
-      ref={meshRef}
-      geometry={mesh.geometry}
-      material={mesh.material}
-      scale={hovered ? scale * 1.15 : scale}
-      onPointerOver={() => {
-        setHovered(true);
-        onPointerOver();
-      }}
-      onPointerOut={() => {
-        setHovered(false);
-        onPointerOut();
-      }}
-    />
+    <group ref={meshRef}   scale={scale}>
+      {nodesArray.map((node, index) => (
+        <mesh
+          key={index}
+          geometry={node.geometry}
+          material={materials.material02}
+        //  scale={hovered ? scale * 1.15 : scale}
+        />
+      ))}
+    </group>
   );
+*/
+
+  return (
+    <group ref={meshRef}  scale={hovered ? scale * 1.15 : scale} > 
+    <mesh geometry= {nodes.gift.geometry}  material={materials.material01} />
+    <mesh    geometry= {nodes.gift_1.geometry} material={materials.material02} /> 
+    <mesh  geometry= {nodes.gift_2.geometry} material={materials.material02} />   
+    <mesh  geometry= {nodes.gift_3.geometry} material={materials.material02} />    
+    <mesh  geometry= {nodes.gift_4.geometry} material={materials.material02} />   
+    <mesh  geometry= {nodes.gift_5.geometry} material={materials.material02} />   
+    <mesh  geometry= {nodes.gift_6.geometry} material={materials.material02} />   
+    <mesh  geometry= {nodes.gift_7.geometry} material={materials.material02} /> 
+    <mesh  geometry= {nodes.gift_8.geometry} material={materials.material02} />   
+    </group>
+  );
+  
 }
 
 export default function GltfModel({ modelPath, scale = 40, position = [0, 0, 0] }) {
@@ -37,23 +55,17 @@ export default function GltfModel({ modelPath, scale = 40, position = [0, 0, 0] 
     return draco;
   }, []);
 
-  const gltf = useGLTF(modelPath, draco);
+ const gltf = useGLTF(modelPath, draco);
 
   return (
-    <group position={position}>
-      
-      {[...Array(9)].map((_, i) => (
-        // show only Blender object layer 8,9 with box
-        // Array(9) max is needed to work
-       ( i > 7) &&
-        <Mesh
-          key={i+5}
-          mesh={gltf.scene.children[i]}
-          scale={scale}
-          onPointerOver={() => console.log(`Pointer over object ${i}`)}
-          onPointerOut={() => console.log(`Pointer out of object ${i}`)}
-        />
-      ))}
+    <group position={position}   
+    //ref={group}
+     >
+      <Mesh
+        modelPath={modelPath}
+        gltf={gltf}
+        scale={scale}
+      />
     </group>
   );
 }

@@ -3,33 +3,31 @@ import { useGLTF } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
-function Mesh({ gltf, scale, onPointerOver, onPointerOut }) {
+function Mesh({ modelPath, gltf, scale, onPointerOver, onPointerOut }) {
   const meshRef = useRef();
   const [hovered, setHovered] = useState(false);
 
+  const { nodes, materials } = useGLTF(modelPath)
+
   useFrame(() => {
-    meshRef.current.rotation.y += 0.003;
+    if (meshRef.current) {
+      meshRef.current.rotation.y += 0.003;
+    }
   });
 
+  const nodesArray = Object.values(nodes);
+
   return (
-    <mesh
-      ref={meshRef}
-      // geometry={eval(`nodes.nr${age}.geometry`)} 
-    // material={eval(`materials.skin${age}`)}  
-       
-      geometry={gltf.scene.children[0].geometry}
-     material={gltf.scene.children[0].material}
-     
-      scale={hovered ? scale * 1.15 : scale}
-      onPointerOver={() => {
-        setHovered(true);
-        onPointerOver();
-      }}
-      onPointerOut={() => {
-        setHovered(false);
-        onPointerOut();
-      }}
-    />
+    <group>
+      {nodesArray.map((node, index) => (
+        <mesh
+          key={index}
+          geometry={node.geometry}
+          material={materials.material02}
+          scale={hovered ? scale * 1.15 : scale}
+        />
+      ))}
+    </group>
   );
 }
 
@@ -45,12 +43,7 @@ export default function GltfModel({ modelPath, scale = 40, position = [0, 0, 0] 
 
   return (
     <group position={position}>
-      <Mesh
-        gltf={gltf}
-        scale={scale}
-        onPointerOver={() => console.log('Pointer over')}
-        onPointerOut={() => console.log('Pointer out')}
-      />
+      <Mesh modelPath={modelPath} gltf={gltf} scale={scale} />
     </group>
   );
 }
